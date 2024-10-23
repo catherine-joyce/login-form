@@ -9,6 +9,10 @@ jobs:
   dast:
     name: OWASP ZAP BASELINE SCAN
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./login_form
 
     steps:
       - uses: actions/checkout@v2
