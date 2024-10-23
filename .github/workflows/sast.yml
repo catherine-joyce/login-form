@@ -11,7 +11,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./login-form
+        working-directory: ./login_form
 
     steps:
       - uses: actions/checkout@v2
