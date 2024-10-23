@@ -16,7 +16,7 @@ class User():
   def find_with_credentials(cls, username, password):
     db = get_db()
     user = db.execute(
-      "SELECT id, username, password FROM user WHERE username = '" + username + "' AND password = '" + password + "'"
+      "SELECT id, username, password FROM user WHERE username = %(username)s AND password = %(password)s", {'username':username, 'password':password}
     ).fetchone()
     print(user)
     if user:
