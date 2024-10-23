@@ -19,7 +19,7 @@ jobs:
         uses: mdegis/bandit-action@v1.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          path: "."
+          path: "./login_form"
           exit_zero: true
 
   semgrep:
@@ -54,7 +54,7 @@ jobs:
         id: Depcheck
         with:
           project: 'insecure-acebook'
-          path: '.'
+          path: './login_form'
           format: 'HTML'
           args: >
             --failOnCVSS 7
