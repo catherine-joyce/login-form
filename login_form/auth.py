@@ -5,6 +5,8 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from login_form.forms import LoginForm, RegisterForm
+
 from login_form.db import get_db
 from login_form.user import User
 
@@ -16,6 +18,7 @@ def index():
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
+    form = RegisterForm()
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -31,10 +34,11 @@ def register():
 
         flash(error)
 
-    return render_template('register.html')
+    return render_template('register.html', form=form)
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
+    form = LoginForm()
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -52,7 +56,7 @@ def login():
 
         flash(error)
 
-    return render_template('login.html')
+    return render_template('login.html', form=form)
 
 @bp.before_app_request
 def load_logged_in_user():
