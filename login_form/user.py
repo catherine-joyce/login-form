@@ -7,13 +7,9 @@ class User():
   def create(cls, username, password):
     db = get_db()
     db.execute(
-      "INSERT INTO user (username, password) VALUES ('"+username+"', '"+password+"')",
-      ()
+      "INSERT INTO user (username, password) VALUES (?, ?)", (username, password)
     )
-    # db.execute(
-    #   "INSERT INTO user (username, password) VALUES (?, ?)", (username, password)
-    # )
-    # db.commit()
+    db.commit()
 
   @classmethod
   def find_with_credentials(cls, username, password):
@@ -31,6 +27,16 @@ class User():
   def find_by_id(cls, user_id):
     user = get_db().execute(
       'SELECT id, username, password FROM user WHERE id = ?', (user_id,)
+    ).fetchone()
+    if user:
+      return User(user['username'], user['password'], user['id'])
+    else:
+      return None
+    
+  @classmethod
+  def find_by_username(cls, username):
+    user = get_db().execute(
+      'SELECT id, username, password FROM user WHERE username = ?', (username,)
     ).fetchone()
     if user:
       return User(user['username'], user['password'], user['id'])
