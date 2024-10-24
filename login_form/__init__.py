@@ -9,6 +9,12 @@ def create_app(test_config=None):
         SECRET_KEY='super_secret_key',
         DATABASE=os.path.join(app.instance_path, 'login_form.sqlite'),
     )
+    app.config.update(
+        SESSION_COOKIE_SECURE=True,
+        SESSION_COOKIE_HTTPONLY=True,
+        SESSION_COOKIE_SAMESITE='Lax',
+    )
+
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
