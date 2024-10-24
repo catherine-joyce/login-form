@@ -12,11 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Bandit - Security Issues in Python code
-        uses: mdegis/bandit-action@v1.0
+        uses: mdegis/bandit-action@v1.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           path: "."
-          exit_zero: true
 
   semgrep:
     runs-on: ubuntu-latest
@@ -41,7 +40,7 @@ jobs:
         uses: dependency-check/Dependency-Check_Action@main
         id: Depcheck
         with:
-          project: 'insecure-acebook'
+          project: 'test'
           path: '.'
           format: 'HTML'
           args: >

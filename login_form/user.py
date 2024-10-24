@@ -7,9 +7,13 @@ class User():
   def create(cls, username, password):
     db = get_db()
     db.execute(
-      "INSERT INTO user (username, password) VALUES (?, ?)", (username, password)
+      "INSERT INTO user (username, password) VALUES ('"+username+"', '"+password+"')",
+      ()
     )
-    db.commit()
+    # db.execute(
+    #   "INSERT INTO user (username, password) VALUES (?, ?)", (username, password)
+    # )
+    # db.commit()
 
   @classmethod
   def find_with_credentials(cls, username, password):
