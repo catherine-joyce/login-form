@@ -32,6 +32,16 @@ class User():
       return User(user['username'], user['password'], user['id'])
     else:
       return None
+    
+  @classmethod
+  def find_by_username(cls, username):
+    user = get_db().execute(
+      'SELECT id, username, password FROM user WHERE username = ?', (username,)
+    ).fetchone()
+    if user:
+      return User(user['username'], user['password'], user['id'])
+    else:
+      return None
 
   def __init__(self, username, password, id):
     self.username = username

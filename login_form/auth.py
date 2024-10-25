@@ -3,12 +3,17 @@ import functools
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-from werkzeug.security import check_password_hash, generate_password_hash
 
 from login_form.forms import LoginForm, RegisterForm
 
 from login_form.db import get_db
 from login_form.user import User
+
+from flask import Flask
+from flask_bcrypt import Bcrypt
+
+app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 bp = Blueprint('auth', __name__, url_prefix='/')
 
@@ -29,7 +34,8 @@ def register():
             error = 'Username is required.'
 
         if error is None:
-            User.create(username, password)
+            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+            User.create(username, hashed_password)
             return redirect(url_for('auth.login'))
 
         flash(error)
@@ -44,15 +50,13 @@ def login():
         password = request.form['password']
 
         error = None
-        user = User.find_with_credentials(username, password)
-
-        if user is None:
-            error = 'Incorrect username or password.'
-
-        if error is None:
+        user = User.find_by_username(username) 
+        if user != None and bcrypt.check_password_hash(user.password, password):
             session.clear()
             session['user_id'] = user.id
             return redirect(url_for('auth.index'))
+        else:
+            error = 'Incorrect username or password.'            
 
         flash(error)
 
